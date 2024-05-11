@@ -1,0 +1,20 @@
+.section-movie-form {
+  /* margin-bottom: 3rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 20rem;
+  height: 20rem;
+  background-color: #f1ebdb;
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+}

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Satisfy } from "next/font/google";
-import "./globals.css";
 import { Footer } from "@/components/footer/Footer";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const inter = Satisfy({
   weight: "400",
@@ -21,11 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <UserProvider>
         <body className={inter.className}>
           {children}
+          <Footer />
         </body>
-      </UserProvider>
     </html>
   );
 }

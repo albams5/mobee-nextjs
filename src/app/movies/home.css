@@ -1,0 +1,77 @@
+*{
+    font-family: "Tilt Neon", sans-serif;
+    
+}
+main{
+    background-color: #ffc93a;
+    height: 80rem;
+}
+
+body{
+    margin: 0 auto;
+}
+
+.logo{
+    height: 5rem;
+    width: 5rem;
+    margin: 0 0.5rem
+}
+
+
+.home-header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #DFAF36;
+    border-radius: 1rem;
+    padding: 1rem
+}
+
+.home-header h1{
+    text-align: center;
+}
+
+.profile-pic{
+    border-radius: 50%;
+    height: 3rem;
+    margin: 0 0.5rem
+}
+
+.header-text{
+    font-size: 1.5rem;
+    color: #F1EBDB
+}
+
+
+.section-movies-rated{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movies-rated{
+    display: flex;
+    width: 20rem;
+    height: 25rem;
+    background-color: #F1EBDB;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.movies-rated::-webkit-scrollbar{
+    display: none
+}
+
+.movie-info{
+    margin: 0.5rem
+}
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+}
