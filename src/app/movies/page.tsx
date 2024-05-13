@@ -6,6 +6,7 @@ import { Genre, MovieCard } from "@/components/movieCard/MovieCard";
 import { MovieForm } from "@/components/movieForm/MovieForm";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
+
 export interface Movie {
   id: number;
   name: string;

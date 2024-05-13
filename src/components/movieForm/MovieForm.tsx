@@ -1,4 +1,5 @@
 import './movieForm.css'
+
 export const MovieForm = () => {
   return (
     <section className="section-movie-form">

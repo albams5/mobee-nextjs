@@ -5,6 +5,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
@@ -53,8 +54,7 @@ const getMovie = async (id: string): Promise<Movie> => {
 
     return movie;
   } catch (error) {
-    //   notFound();
-    throw new Error("error");
+      notFound();
   }
 };
 
