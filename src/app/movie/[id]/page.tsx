@@ -1,3 +1,4 @@
+
 import { Movie } from "@/app/movies/page";
 import "./movie.css";
 import Image from "next/image";
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { DeleteBtn } from "@/components/deleteBtn/DeleteBtn";
 
 interface Props {
   params: { id: string };
@@ -134,7 +136,7 @@ export default async function MoviePage({ params }: Props) {
             </svg>
           </a>
         </div>
-        <button>Delete</button>
+        <DeleteBtn movieId={movie.id} />
       </div>
     </section>
   );

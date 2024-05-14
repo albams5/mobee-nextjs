@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Satisfy } from "next/font/google";
 import "./globals.css";
-import { Footer } from "@/components/footer/Footer";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const inter = Satisfy({
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
   description: "An app to rate the movies you've watched",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
