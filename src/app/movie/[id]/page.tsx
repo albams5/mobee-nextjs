@@ -52,8 +52,8 @@ export default async function MoviePage({ params }: Props) {
   console.log(movie);
   const genresFetch = async (movie: Movie) => {
     const genreIDs = Array.isArray(movie.genre)
-      ? movie.genre.map((genre) => genre.genreID)
-      : [movie.genre.genreID];
+      ? movie.genre.map((genre) => genre.id)
+      : [movie.genre.id];
     const genreNames = await Promise.all(
       genreIDs.map(async (genreID) => {
         const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
