@@ -28,19 +28,6 @@ export async function generateMetadata({params}:Props):Promise<Metadata> {
   }
 }
 
-const genresFetch = async (movie: Movie) => {
-  const genreIDs = Array.isArray(movie.genre)
-    ? movie.genre.map((genre) => genre.genreID)
-    : [movie.genre.genreID];
-  const genreNames = await Promise.all(
-    genreIDs.map(async (genreID) => {
-      const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
-      const response = await dataGenre.json();
-      return response.data.name;
-    })
-  );
-  return genreNames.join(", ");
-};
 
 const getMovie = async (id: string): Promise<Movie> => {
   try {
@@ -63,6 +50,19 @@ const getMovie = async (id: string): Promise<Movie> => {
 export default async function MoviePage({ params }: Props) {
   const movie = await getMovie(params.id);
   console.log(movie);
+  const genresFetch = async (movie: Movie) => {
+    const genreIDs = Array.isArray(movie.genre)
+      ? movie.genre.map((genre) => genre.genreID)
+      : [movie.genre.genreID];
+    const genreNames = await Promise.all(
+      genreIDs.map(async (genreID) => {
+        const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
+        const response = await dataGenre.json();
+        return response.data.name;
+      })
+    );
+    return genreNames.join(", ");
+  };
   const genres = await genresFetch(movie);
   return (
     <section className="moviepage-main-section">
