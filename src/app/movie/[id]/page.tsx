@@ -28,7 +28,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata> {
   }
 }
 
-export const genresFetch = async (movie: Movie) => {
+const genresFetch = async (movie: Movie) => {
   const genreIDs = Array.isArray(movie.genre)
     ? movie.genre.map((genre) => genre.genreID)
     : [movie.genre.genreID];
