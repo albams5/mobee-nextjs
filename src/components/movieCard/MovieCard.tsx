@@ -9,7 +9,7 @@ type Props = {
 };
 
 export type Genre = {
-  genreID: number;
+  id: number;
   name: string;
 };
 

@@ -3,15 +3,26 @@
 import { FormEvent, useState } from "react";
 import "./movieForm.css";
 import { getGenres, postNewMovie } from "@/services/request.service";
+import { Genre } from "../movieCard/MovieCard";
+
+type GenreId = {
+  id: number
+}
 
 export const MovieForm = async () => {
-  const [movieData, setMovieData] = useState({
+  const [movieData, setMovieData] = useState<{
+    name: string;
+    image: File | null;
+    score: string;
+    genre: number[];
+    sinopsis: string;
+  }>({
     name: "",
     image: null,
     score: "",
     genre: [],
     sinopsis: "",
-  });
+  });;
 
   const { name, image, score, genre, sinopsis } = movieData;
 
@@ -26,7 +37,7 @@ export const MovieForm = async () => {
     formData.append("image", image);
   }
 
-  const genres = await getGenres();
+  const genres: Genre[] = await getGenres();
   console.log({genres})
 
   const handleInputChange = (event: Event | any) => {
@@ -56,7 +67,7 @@ export const MovieForm = async () => {
   const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     const genreId = parseInt(value);
-    let updatedGenres;
+    let updatedGenres: number[];
     if (checked) {
       updatedGenres = [...movieData.genre, genreId];
     } else {
@@ -118,7 +129,7 @@ export const MovieForm = async () => {
         </select>
         <label htmlFor="genre">Genre:</label>
         <div className="genre-checkboxes">
-          {genres.map((genre: any) => (
+          {genres.map((genre: Genre) => (
             <label key={genre.id}>
               <input
                 type="checkbox"
