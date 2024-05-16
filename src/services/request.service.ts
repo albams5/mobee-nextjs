@@ -10,7 +10,7 @@ export const removeMovie = async (id: number) => {
         // }
     });
     if (res.ok) {
-        revalidatePath('/movies')
+        revalidatePath(`/movie/${id}`)
     }
 }
 
