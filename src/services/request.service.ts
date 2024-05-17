@@ -1,5 +1,8 @@
 import {revalidatePath} from "next/cache";
 import {getAccessToken} from '@auth0/nextjs-auth0';
+import { GenreOnMovies, Movie, genreFetch } from "@/app/movies/page";
+import { notFound } from "next/navigation";
+import { MovieCard } from "@/components/movieCard/MovieCard";
 
 export const removeMovie = async (id: number) => {
     // const {accessToken} = await getAccessToken()
@@ -51,3 +54,44 @@ export const getGenres = async() => {
     const response = await dataGenre.json();
     return response.data;
   }
+
+export const getMovie = async (id: string): Promise<Movie> => {
+    try {
+      const dataMovie = await fetch(`http://localhost:4000/movie/${id}`, {
+        next: {
+          revalidate: 60,
+        },
+      });
+      const response = await dataMovie.json();
+      const movie = response.data;
+  
+      console.log(movie.name);
+  
+      return movie;
+    } catch (error) {
+        notFound();
+    }
+  };
+  
+export const genresFetch = async (movie: Movie) => {
+    const genreNamesPromises = movie.genre.map(
+      async (genreObj: GenreOnMovies) => {
+        const genreID = genreObj.genreID;
+        const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
+        const response = await dataGenre.json();
+        return response.data.name;
+      }
+    )
+      const genreNames = await Promise.all(genreNamesPromises);
+    return genreNames.join(", ");
+  };
+
+export const getMovies = async () => {
+    const dataMovies = await fetch("http://localhost:4000/movie");
+    const response = await dataMovies.json();
+    const movies = response.data;
+    const movieCards = await Promise.all(
+      movies.map((movie: Movie) => genreFetch(movie))
+    );
+    return movieCards;
+  };

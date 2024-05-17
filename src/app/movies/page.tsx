@@ -1,41 +1,38 @@
 import Image from "next/image";
 import "./home.css";
-import logo from "../logo.png";
+import logo from "../../../public/logo.png";
 import { Genre, MovieCard } from "@/components/movieCard/MovieCard";
 import { MovieForm } from "@/components/movieForm/MovieForm";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
+import { getMovies } from "@/services/request.service";
 
 export interface Movie {
   id: number;
   name: string;
   image: string;
   score: number;
-  genre: Genre | Genre[];
+  genre: [];
   sinopsis: string;
 }
 
-const getMovies = async () => {
-  const dataMovies = await fetch("http://localhost:4000/movie");
-  const response = await dataMovies.json();
-  const movies = response.data;
-  const movieCards = await Promise.all(
-    movies.map((movie: Movie) => genreFetch(movie))
-  );
-  return movieCards;
-};
+export interface GenreOnMovies {
+  movieID: string;
+  genreID: string;
+}
 
-const genreFetch = async (movie: Movie) => {
-  const genreIDs = Array.isArray(movie.genre)
-    ? movie.genre.map((genre) => genre.id)
-    : [movie.genre.id];
-  const genreNames = await Promise.all(
-    genreIDs.map(async (genreID) => {
+export const genreFetch = async (movie: Movie) => {
+  const genreNamesPromises = movie.genre.map(
+    async (genreObj: GenreOnMovies) => {
+      const genreID = genreObj.genreID;
       const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
       const response = await dataGenre.json();
       return response.data.name;
-    })
+    }
   );
+
+  const genreNames = await Promise.all(genreNamesPromises);
+
   return <MovieCard key={movie.id} movie={movie} genre={genreNames} />;
 };
 

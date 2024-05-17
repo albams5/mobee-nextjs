@@ -1,15 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./movieForm.css";
 import { getGenres, postNewMovie } from "@/services/request.service";
 import { Genre } from "../movieCard/MovieCard";
 
-type GenreId = {
-  id: number
-}
-
-export const MovieForm = async () => {
+export const MovieForm = () => {
   const [movieData, setMovieData] = useState<{
     name: string;
     image: File | null;
@@ -22,25 +18,20 @@ export const MovieForm = async () => {
     score: "",
     genre: [],
     sinopsis: "",
-  });;
+  });
 
-  const { name, image, score, genre, sinopsis } = movieData;
+  const [genres, setGenres] = useState<Genre[]>([]);
 
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("score", score);
-  formData.append("sinopsis", sinopsis);
-  const genreString = genre.join(",");
-  formData.append("genre", genreString);
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const genresData = await getGenres();
+      setGenres(genresData);
+    };
 
-  if (image !== null) {
-    formData.append("image", image);
-  }
+    fetchGenres();
+  }, []);
 
-  const genres: Genre[] = await getGenres();
-  console.log({genres})
-
-  const handleInputChange = (event: Event | any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setMovieData({
       ...movieData,
@@ -48,26 +39,36 @@ export const MovieForm = async () => {
     });
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("dentro del handleSubmit");
-    console.log("moviedata antes de enviarla al back", movieData);
-    postNewMovie("1", formData);
+    const formData = new FormData();
+    formData.append("name", movieData.name);
+    formData.append("score", movieData.score);
+    formData.append("sinopsis", movieData.sinopsis);
+    const genreString = movieData.genre.join(",");
+    formData.append("genre", genreString);
+
+    if (movieData.image !== null) {
+      formData.append("image", movieData.image);
+    }
+
+    await postNewMovie("1", formData);
   };
 
-  const handleImageChange = (event: Event | any) => {
-    const file = event.target.files[0];
-    console.log(file);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+  if (file !== undefined) {
     setMovieData({
       ...movieData,
       image: file,
     });
+  }
   };
 
   const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     const genreId = parseInt(value);
-    let updatedGenres: number[];
+    let updatedGenres;
     if (checked) {
       updatedGenres = [...movieData.genre, genreId];
     } else {
@@ -85,24 +86,29 @@ export const MovieForm = async () => {
       <form onSubmit={handleSubmit} className="movie-form">
         <label htmlFor="name">Title:</label>
         <input
+          className="movieform-input"
           type="text"
           id="name"
           name="name"
           value={movieData.name}
           onChange={handleInputChange}
+          placeholder="Ex. Jurassic Park"
           required
         />
         <label htmlFor="sinopsis">Sinopsis:</label>
         <input
+        className="movieform-input"
           type="text"
           id="sinopsis"
           name="sinopsis"
           value={movieData.sinopsis}
           onChange={handleInputChange}
+          placeholder="Ex. Jurassic Park is a movie about a dinosaur's park."
           required
         />
         <label htmlFor="image">Image:</label>
         <input
+        className="movieform-input-image"
           type="file"
           id="image"
           name="image"
@@ -111,6 +117,7 @@ export const MovieForm = async () => {
         />
         <label htmlFor="score">Score:</label>
         <select
+        className="movieform-select"
           value={movieData.score}
           onChange={handleInputChange}
           id="score"

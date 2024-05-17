@@ -17,7 +17,7 @@ export const MovieCard = ({ movie, genre }: Props) => {
   return (
     <Link className="moviecard-link" href={`/movie/${movie.id}`}>
       <div className="movie-card">
-        <Image height={13} width={140} alt="movie poster" className="movie-img" src={movie.image} />
+        <Image height={13} width={150} alt="movie poster" className="movie-img" src={movie.image} />
         <section className="movie-info">
           <h3 className="movie-title">{movie.name}</h3>
           <p className="movie-score">Score: {movie.score}</p>

@@ -1,6 +1,6 @@
 import "./login.css";
 import Image from "next/image";
-import logo from "./logo.png";
+import logo from "../../public/logo.png";
 import Link from "next/link";
 
 export default function Login() {
