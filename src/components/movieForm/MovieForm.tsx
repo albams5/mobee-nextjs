@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import "./movieForm.css";
-import { getGenres, postNewMovie } from "@/services/request.service";
+import { getGenres } from "@/services/request.service";
 import { Genre } from "../movieCard/MovieCard";
 
-export const MovieForm = () => {
+export const MovieForm = ({ handleFormSubmit, movieId, handlePatch }: any) => {
   const [movieData, setMovieData] = useState<{
     name: string;
     image: File | null;
@@ -21,6 +21,7 @@ export const MovieForm = () => {
   });
 
   const [genres, setGenres] = useState<Genre[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -31,7 +32,9 @@ export const MovieForm = () => {
     fetchGenres();
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     setMovieData({
       ...movieData,
@@ -41,6 +44,7 @@ export const MovieForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData();
     formData.append("name", movieData.name);
     formData.append("score", movieData.score);
@@ -52,17 +56,18 @@ export const MovieForm = () => {
       formData.append("image", movieData.image);
     }
 
-    await postNewMovie("1", formData);
+    await handleFormSubmit(formData);
+    setIsSubmitting(false);
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-  if (file !== undefined) {
-    setMovieData({
-      ...movieData,
-      image: file,
-    });
-  }
+    if (file !== undefined) {
+      setMovieData({
+        ...movieData,
+        image: file,
+      });
+    }
   };
 
   const handleGenreChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,8 +86,7 @@ export const MovieForm = () => {
   };
 
   return (
-    <section className="section-movie-form">
-      Rate your movies here:
+    
       <form onSubmit={handleSubmit} className="movie-form">
         <label htmlFor="name">Title:</label>
         <input
@@ -97,7 +101,7 @@ export const MovieForm = () => {
         />
         <label htmlFor="sinopsis">Sinopsis:</label>
         <input
-        className="movieform-input"
+          className="movieform-input"
           type="text"
           id="sinopsis"
           name="sinopsis"
@@ -108,7 +112,7 @@ export const MovieForm = () => {
         />
         <label htmlFor="image">Image:</label>
         <input
-        className="movieform-input-image"
+          className="movieform-input-image"
           type="file"
           id="image"
           name="image"
@@ -117,12 +121,15 @@ export const MovieForm = () => {
         />
         <label htmlFor="score">Score:</label>
         <select
-        className="movieform-select"
+          className="movieform-select"
           value={movieData.score}
           onChange={handleInputChange}
           id="score"
           name="score"
         >
+          <option value="" disabled>
+            Choose a number
+          </option>
           <option value="10">10</option>
           <option value="9">9</option>
           <option value="8">8</option>
@@ -148,8 +155,12 @@ export const MovieForm = () => {
             </label>
           ))}
         </div>
-        <input className="movies-form-btn" type="submit" value="Send" />
+        <input
+          className="movies-form-btn"
+          type="submit"
+          value={isSubmitting ? "Sending" : "Send"}
+          disabled={isSubmitting}
+        />
       </form>
-    </section>
   );
 };

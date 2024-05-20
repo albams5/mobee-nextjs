@@ -1,15 +1,18 @@
 'use client'
-import { removeMovie } from "@/services/request.service";
 import "./deleteBtn.css";
 
 interface Props {
   movieId: number;
+  handleDelete: Function
 }
 
-export const DeleteBtn = ({ movieId }: Props) => {
+export const DeleteBtn = ({ movieId, handleDelete }: Props) => {
+  const handleClick = () => {
+    handleDelete(movieId);
+  };
   return (
     <button className="delete-btn"
-    onClick={() => removeMovie(movieId)}
+    onClick={handleClick}
     >
       Delete
     </button>

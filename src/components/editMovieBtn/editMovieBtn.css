@@ -1,4 +1,4 @@
-.delete-btn {
+.edit-btn {
     padding: 0.8em 1.7em;
     display: block;
     margin: auto;
@@ -10,7 +10,7 @@
     transition: .4s ease-in-out;
   }
   
-  .delete-btn:hover {
+  .edit-btn:hover {
     background: #FFC93A;
     color: white;
     cursor: pointer;

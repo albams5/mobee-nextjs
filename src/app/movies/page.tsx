@@ -1,11 +1,13 @@
+"use server";
+
 import Image from "next/image";
 import "./home.css";
 import logo from "../../../public/logo.png";
-import { Genre, MovieCard } from "@/components/movieCard/MovieCard";
+import { MovieCard } from "@/components/movieCard/MovieCard";
 import { MovieForm } from "@/components/movieForm/MovieForm";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
-import { getMovies } from "@/services/request.service";
+import { getMovies, postNewMovie } from "@/services/request.service";
 
 export interface Movie {
   id: number;
@@ -47,6 +49,10 @@ export default async function Home() {
   }
 
   const movieCards = await getMovies();
+  const handleFormSubmit = async (movieData: Movie) => {
+    "use server";
+    await postNewMovie("1", movieData);
+  };
   return (
     <>
       <main>
@@ -68,7 +74,10 @@ export default async function Home() {
           <p>Movies you have already rated:</p>
           <div className="movies-rated">{movieCards}</div>
         </section>
-        <MovieForm />
+        <section className="section-movie-form">
+      Rate your movies here:
+        <MovieForm handleFormSubmit={handleFormSubmit} />
+        </section>
         <Link href="/api/auth/logout" className="logout-container">
           <button className="loginlogoutbtn">Logout</button>
         </Link>

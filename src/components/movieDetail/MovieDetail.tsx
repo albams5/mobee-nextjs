@@ -1,17 +1,22 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { DeleteBtn } from "../deleteBtn/DeleteBtn"
-import Link from "next/link"
-import Image from 'next/image'
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
-import { Movie } from "@/app/movies/page"
-import { Genre } from "../movieCard/MovieCard"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DeleteBtn } from "../deleteBtn/DeleteBtn";
+import Link from "next/link";
+import Image from "next/image";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { Movie } from "@/app/movies/page";
+import { removeMovie } from "@/services/request.service";
+import { EditMovieBtn } from "../editMovieBtn/EditMovieBtn";
 
 type Props = {
-    movie: Movie,
-    genres: string
-}
+  movie: Movie;
+  genres: string;
+};
 
-export const MovieDetail = ({movie, genres}: Props) => {
+export const MovieDetail = ({ movie, genres }: Props) => {
+  const handleDelete = async () => {
+    "use server";
+    await removeMovie(movie.id);
+  };
   return (
     <section className="moviepage-main-section">
       <div className="card">
@@ -84,8 +89,9 @@ export const MovieDetail = ({movie, genres}: Props) => {
             </svg>
           </a>
         </div>
-        <DeleteBtn movieId={movie.id} />
+        <EditMovieBtn movieId={movie.id} />
+        <DeleteBtn handleDelete={handleDelete} movieId={movie.id} />
       </div>
     </section>
-  )
+  );
 }
