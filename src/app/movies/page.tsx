@@ -10,7 +10,7 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { getMovies, postNewMovie } from "@/services/request.service";
 
 export interface Movie {
-  id: number;
+  id: string;
   name: string;
   image: string;
   score: number;
@@ -75,8 +75,8 @@ export default async function Home() {
           <div className="movies-rated">{movieCards}</div>
         </section>
         <section className="section-movie-form">
-      Rate your movies here:
-        <MovieForm handleFormSubmit={handleFormSubmit} />
+          Rate your movies here:
+          <MovieForm handleFormSubmit={handleFormSubmit} />
         </section>
         <Link href="/api/auth/logout" className="logout-container">
           <button className="loginlogoutbtn">Logout</button>

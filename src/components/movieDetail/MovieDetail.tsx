@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Movie } from "@/app/movies/page";
-import { removeMovie } from "@/services/request.service";
+import { patchMovie, removeMovie } from "@/services/request.service";
 import { EditMovieBtn } from "../editMovieBtn/EditMovieBtn";
 
 type Props = {
@@ -17,6 +17,10 @@ export const MovieDetail = ({ movie, genres }: Props) => {
     "use server";
     await removeMovie(movie.id);
   };
+  const handlePatch = async (movieId:string, formData: FormData) => {
+    "use server"
+    await patchMovie(movieId, formData)
+  }
   return (
     <section className="moviepage-main-section">
       <div className="card">
@@ -89,7 +93,7 @@ export const MovieDetail = ({ movie, genres }: Props) => {
             </svg>
           </a>
         </div>
-        <EditMovieBtn movieId={movie.id} />
+        <EditMovieBtn handlePatch={handlePatch} movieId={movie.id} />
         <DeleteBtn handleDelete={handleDelete} movieId={movie.id} />
       </div>
     </section>

@@ -5,10 +5,11 @@ import { FormModal } from "../formModal/FormModal";
 import { MovieForm } from "../movieForm/MovieForm";
 
 type Props = {
-  movieId: number;
+  movieId: string;
+  handlePatch: any
 };
 
-export const EditMovieBtn = ({ movieId }: Props) => {
+export const EditMovieBtn = ({ movieId, handlePatch }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleEditMovie = () => {
     setIsModalOpen(true);
@@ -20,8 +21,10 @@ export const EditMovieBtn = ({ movieId }: Props) => {
       </button>
       {isModalOpen && (
         <FormModal key={movieId} onClose={() => setIsModalOpen(false)}>
-          <MovieForm />
-          <button className="close-button" onClick={() => setIsModalOpen(false)}>
+          <MovieForm isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} movieId={movieId} handlePatch={handlePatch} />
+          <button className="close-button"
+          onClick={() => setIsModalOpen(!isModalOpen)}
+          >
             X
           </button>
         </FormModal>

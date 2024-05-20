@@ -3,7 +3,7 @@ import { getAccessToken } from "@auth0/nextjs-auth0";
 import { GenreOnMovies, Movie, genreFetch } from "@/app/movies/page";
 import { notFound, redirect } from "next/navigation";
 
-export const removeMovie = async (id: number) => {
+export const removeMovie = async (id: string) => {
   // const {accessToken} = await getAccessToken()
   try {
     const res = await fetch(`http://localhost:4000/movie/${id}`, {

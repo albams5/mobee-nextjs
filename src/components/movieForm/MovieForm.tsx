@@ -5,7 +5,15 @@ import "./movieForm.css";
 import { getGenres } from "@/services/request.service";
 import { Genre } from "../movieCard/MovieCard";
 
-export const MovieForm = ({ handleFormSubmit, movieId, handlePatch }: any) => {
+interface MovieFormProps {
+  handleFormSubmit?: (formData: any) => Promise<void>;
+  movieId?: string; 
+  handlePatch?: (movieId: string, formData: FormData) => Promise<void>;
+  setIsModalOpen?: any;
+  isModalOpen?: boolean
+}
+
+export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOpen, isModalOpen }: MovieFormProps) => {
   const [movieData, setMovieData] = useState<{
     name: string;
     image: File | null;
@@ -56,8 +64,23 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch }: any) => {
       formData.append("image", movieData.image);
     }
 
-    await handleFormSubmit(formData);
-    setIsSubmitting(false);
+    if(movieId && handlePatch){
+      await handlePatch(movieId, formData)
+      setIsModalOpen(!isModalOpen)
+    }
+
+    if(handleFormSubmit) {
+      await handleFormSubmit(formData);
+    }
+    
+    setMovieData({
+      name: "",
+      image: null,
+      score: "",
+      genre: [],
+      sinopsis: "",
+    });
+    console.log({movieData})
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

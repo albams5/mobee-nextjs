@@ -2,7 +2,7 @@
 import "./deleteBtn.css";
 
 interface Props {
-  movieId: number;
+  movieId: string;
   handleDelete: Function
 }
 
