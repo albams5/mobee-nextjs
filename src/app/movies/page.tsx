@@ -9,6 +9,8 @@ import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 import { getMovies, postNewMovie } from "@/services/request.service";
 
+const localhostUrl = process.env.NEXT_PUBLIC_LOCALHOST_URL;
+
 export interface Movie {
   id: string;
   name: string;
@@ -27,7 +29,7 @@ export const genreFetch = async (movie: Movie) => {
   const genreNamesPromises = movie.genre.map(
     async (genreObj: GenreOnMovies) => {
       const genreID = genreObj.genreID;
-      const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
+      const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
       const response = await dataGenre.json();
       return response.data.name;
     }
@@ -60,8 +62,8 @@ export default async function Home() {
           <Image src={logo} alt="Logo" className="logo" />
           <h1 className="header-text">Welcome to Mobee, {user?.name} </h1>
           <Image
-            height={40}
-            width={50}
+            height={50}
+            width={60}
             alt="profile pic"
             src={
               user?.picture ??

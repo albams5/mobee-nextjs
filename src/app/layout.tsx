@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className={inter.className} lang="en">
       <UserProvider>
         <body className={inter.className}>
           {children}

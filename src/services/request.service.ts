@@ -3,31 +3,32 @@ import { getAccessToken } from "@auth0/nextjs-auth0";
 import { GenreOnMovies, Movie, genreFetch } from "@/app/movies/page";
 import { notFound, redirect } from "next/navigation";
 
+const localhostUrl = process.env.NEXT_PUBLIC_LOCALHOST_URL;
+
+
 export const removeMovie = async (id: string) => {
-  // const {accessToken} = await getAccessToken()
+  const {accessToken} = await getAccessToken()
   try {
-    const res = await fetch(`http://localhost:4000/movie/${id}`, {
+    const res = await fetch(`${localhostUrl}/movie/${id}`, {
       method: "DELETE",
-      // headers: {
-      //     Authorization: `Bearer ${accessToken}`
-      // }
+      headers: {
+          Authorization: `Bearer ${accessToken}`
+      }
     });
     if (res.ok) {
-      revalidatePath(`/movies`, "page");
-      redirect("/movies");
-
-      // window.location.href = "/movies";
+      revalidatePath(`/movies`, "page")
     }
   } catch (error) {
     console.error("Error deleting movie:", error);
   }
+  redirect("/movies")
 };
 
 export const postNewMovie = async (userID: string, movieData: any) => {
   const {accessToken} = await getAccessToken()
   console.log("dentro de postNewMovie");
   console.log(movieData);
-  const res = await fetch(`http://localhost:4000/movie/${userID}`, {
+  const res = await fetch(`${localhostUrl}/movie/${userID}`, {
     method: "POST",
     headers: {
           Authorization: `Bearer ${accessToken}`
@@ -43,7 +44,7 @@ export const patchMovie = async (movieID: string, movieData: any) => {
   const {accessToken} = await getAccessToken()
   console.log("dentro de patchMovie");
   console.log(movieData);
-  const res = await fetch(`http://localhost:4000/movie/${movieID}`, {
+  const res = await fetch(`${localhostUrl}/movie/${movieID}`, {
     method: "PATCH",
     headers: {
           Authorization: `Bearer ${accessToken}`
@@ -76,14 +77,14 @@ export const patchMovie = async (movieID: string, movieData: any) => {
 // }
 
 export const getGenres = async () => {
-  const dataGenre = await fetch(`http://localhost:4000/genre`);
+  const dataGenre = await fetch(`${localhostUrl}/genre`);
   const response = await dataGenre.json();
   return response.data;
 };
 
 export const getMovie = async (id: string): Promise<Movie> => {
   try {
-    const dataMovie = await fetch(`http://localhost:4000/movie/${id}`, {
+    const dataMovie = await fetch(`${localhostUrl}/movie/${id}`, {
       next: {
         revalidate: 60,
       },
@@ -103,7 +104,7 @@ export const genresFetch = async (movie: Movie) => {
   const genreNamesPromises = movie.genre.map(
     async (genreObj: GenreOnMovies) => {
       const genreID = genreObj.genreID;
-      const dataGenre = await fetch(`http://localhost:4000/genre/${genreID}`);
+      const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
       const response = await dataGenre.json();
       return response.data.name;
     }
@@ -113,7 +114,7 @@ export const genresFetch = async (movie: Movie) => {
 };
 
 export const getMovies = async () => {
-  const dataMovies = await fetch("http://localhost:4000/movie", {
+  const dataMovies = await fetch(`${localhostUrl}/movie`, {
     next: { tags: ["movies"] },
   });
   const response = await dataMovies.json();

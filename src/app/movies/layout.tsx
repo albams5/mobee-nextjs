@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section lang="en">
+    <section className={inter.className} lang="en">
         <div className={inter.className}>
           {children}
           <Footer />
