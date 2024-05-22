@@ -62,7 +62,7 @@ export default async function Home() {
           <Image src={logo} alt="Logo" className="logo" />
           <h1 className="header-text">Welcome to Mobee, {user?.name} </h1>
           <Image
-            height={50}
+            height={60}
             width={60}
             alt="profile pic"
             src={

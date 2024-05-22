@@ -7,7 +7,7 @@ import { Genre } from "../movieCard/MovieCard";
 
 interface MovieFormProps {
   handleFormSubmit?: (formData: any) => Promise<void>;
-  movieId?: string; 
+  movieId?: string;
   handlePatch?: (movieId: string, formData: FormData) => Promise<void>;
   setIsModalOpen?: any;
   isModalOpen?: boolean
@@ -30,6 +30,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState("")
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -52,7 +53,18 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (
+      !movieData.name ||
+      !movieData.image ||
+      !movieData.score ||
+      movieData.genre.length === 0 ||
+      !movieData.sinopsis
+    ) {
+      setError("Please fill out all fields.");
+      return;
+    }
     setIsSubmitting(true);
+    setError("")
     const formData = new FormData();
     formData.append("name", movieData.name);
     formData.append("score", movieData.score);
@@ -80,7 +92,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
       genre: [],
       sinopsis: "",
     });
-    console.log({movieData})
+    setIsSubmitting(false)
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +132,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
           value={movieData.name}
           onChange={handleInputChange}
           placeholder="Ex. Jurassic Park"
-          required
+          // required
         />
         <label htmlFor="sinopsis">Sinopsis:</label>
         <input
@@ -131,7 +143,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
           value={movieData.sinopsis}
           onChange={handleInputChange}
           placeholder="Ex. Jurassic Park is a movie about a dinosaur's park."
-          required
+          // required
         />
         <label htmlFor="image">Image:</label>
         <input
@@ -140,7 +152,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
           id="image"
           name="image"
           onChange={handleImageChange}
-          required
+          // required
         />
         <label htmlFor="score">Score:</label>
         <select
@@ -178,6 +190,9 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
             </label>
           ))}
         </div>
+        <span className="error-container">
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        </span>
         <input
           className="movies-form-btn"
           type="submit"
