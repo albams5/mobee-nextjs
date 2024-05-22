@@ -6,7 +6,7 @@ import { MovieForm } from "../movieForm/MovieForm";
 
 type Props = {
   movieId: string;
-  handlePatch: any
+  handlePatch: (movieId: string, formData: FormData) => Promise<void>;
 };
 
 export const EditMovieBtn = ({ movieId, handlePatch }: Props) => {

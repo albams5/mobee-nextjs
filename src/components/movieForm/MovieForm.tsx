@@ -6,10 +6,10 @@ import { getGenres } from "@/services/request.service";
 import { Genre } from "../movieCard/MovieCard";
 
 interface MovieFormProps {
-  handleFormSubmit?: (formData: any) => Promise<void>;
+  handleFormSubmit?: (formData: FormData) => Promise<void>;
   movieId?: string;
   handlePatch?: (movieId: string, formData: FormData) => Promise<void>;
-  setIsModalOpen?: any;
+  setIsModalOpen?: (isOpen: boolean) => void;
   isModalOpen?: boolean
 }
 
@@ -78,7 +78,9 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
 
     if(movieId && handlePatch){
       await handlePatch(movieId, formData)
-      setIsModalOpen(!isModalOpen)
+      if (setIsModalOpen) {
+        setIsModalOpen(!isModalOpen);
+      }
     }
 
     if(handleFormSubmit) {

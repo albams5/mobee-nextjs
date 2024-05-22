@@ -24,7 +24,7 @@ export const removeMovie = async (id: string) => {
   redirect("/movies")
 };
 
-export const postNewMovie = async (userID: string, movieData: any) => {
+export const postNewMovie = async (userID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
   console.log("dentro de postNewMovie");
   console.log(movieData);
@@ -40,7 +40,7 @@ export const postNewMovie = async (userID: string, movieData: any) => {
   }
 };
 
-export const patchMovie = async (movieID: string, movieData: any) => {
+export const patchMovie = async (movieID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
   console.log("dentro de patchMovie");
   console.log(movieData);
@@ -56,25 +56,6 @@ export const patchMovie = async (movieID: string, movieData: any) => {
   }
 };
 
-// export const postNewMovie = async (userID:string, movieData: any) => {
-//     // const {accessToken} = await getAccessToken()
-//     // const headers = new Headers
-//     // headers.append('Content-Type', 'application/json');
-//     // headers.append('Accept', 'application/json');
-//     // headers.append('Origin','http://localhost:3000');
-//     const res = await fetch(`http://localhost:4000/movie/${userID}`, {
-
-//         method: 'POST',
-//         // headers: headers,
-//         // mode: "cors",
-//         // credentials: "include",
-//         body: movieData
-//     });
-//     // if (res.ok) {
-//     //   // revalidateTag('/movies')
-//     // revalidatePath("/movies", "page")
-// // }
-// }
 
 export const getGenres = async () => {
   const dataGenre = await fetch(`${localhostUrl}/genre`);
