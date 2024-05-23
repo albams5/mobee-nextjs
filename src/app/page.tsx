@@ -2,6 +2,12 @@ import "./login.css";
 import Image from "next/image";
 import logo from "../../public/logo.png";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Mobee App",
+  description: "Join our hive!"
+}
 
 export default function Login() {
   return (

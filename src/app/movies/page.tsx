@@ -8,8 +8,14 @@ import { MovieForm } from "@/components/movieForm/MovieForm";
 import Link from "next/link";
 import { getSession } from "@auth0/nextjs-auth0";
 import { getMovies, postNewMovie } from "@/services/request.service";
+import { Metadata } from "next";
 
 const localhostUrl = process.env.NEXT_PUBLIC_LOCALHOST_URL;
+
+export const metadata: Metadata = {
+  title: "Mobee App Home",
+  description: "App to rate your fav movies"
+}
 
 export interface Movie {
   id: string;
@@ -51,7 +57,7 @@ export default async function Home() {
   }
 
   const movieCards = await getMovies();
-  const handleFormSubmit = async (movieData: Movie) => {
+  const handleFormSubmit = async (movieData: FormData) => {
     "use server";
     await postNewMovie("1", movieData);
   };
