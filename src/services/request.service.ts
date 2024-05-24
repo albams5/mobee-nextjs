@@ -26,41 +26,49 @@ export const removeMovie = async (id: string) => {
 
 export const postNewMovie = async (userID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
-  console.log("dentro de postNewMovie");
-  console.log(movieData);
-  const res = await fetch(`${localhostUrl}/movie/${userID}`, {
-    method: "POST",
-    headers: {
-          Authorization: `Bearer ${accessToken}`
-      },
-    body: movieData,
-  });
-  if (res.ok) {
-    revalidatePath("/movies");
+  try{
+    const res = await fetch(`${localhostUrl}/movie/${userID}`, {
+      method: "POST",
+      headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+      body: movieData,
+    });
+    if (res.ok) {
+      revalidatePath("/movies");
+    }
+  } catch(error){
+    console.error("Error creating movie:", error);
   }
 };
 
 export const patchMovie = async (movieID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
-  console.log("dentro de patchMovie");
-  console.log(movieData);
-  const res = await fetch(`${localhostUrl}/movie/${movieID}`, {
-    method: "PATCH",
-    headers: {
-          Authorization: `Bearer ${accessToken}`
-      },
-    body: movieData,
-  });
-  if (res.ok) {
-    revalidatePath(`/movie/${movieID}`);
+  try{
+    const res = await fetch(`${localhostUrl}/movie/${movieID}`, {
+      method: "PATCH",
+      headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+      body: movieData,
+    });
+    if (res.ok) {
+      revalidatePath(`/movie/${movieID}`);
+    }
+  }catch(error){
+    console.error("Error patching movie:", error);
   }
 };
 
 
 export const getGenres = async () => {
-  const dataGenre = await fetch(`${localhostUrl}/genre`);
-  const response = await dataGenre.json();
-  return response.data;
+  try{
+    const dataGenre = await fetch(`${localhostUrl}/genre`);
+    const response = await dataGenre.json();
+    return response.data;
+  }catch{
+    console.error("Error getting genres")
+  }
 };
 
 export const getMovie = async (id: string): Promise<Movie> => {
@@ -73,8 +81,6 @@ export const getMovie = async (id: string): Promise<Movie> => {
     const response = await dataMovie.json();
     const movie = response.data;
 
-    console.log(movie.name);
-
     return movie;
   } catch (error) {
     notFound();
@@ -82,26 +88,36 @@ export const getMovie = async (id: string): Promise<Movie> => {
 };
 
 export const genresFetch = async (movie: Movie) => {
-  const genreNamesPromises = movie.genre.map(
-    async (genreObj: GenreOnMovies) => {
-      const genreID = genreObj.genreID;
-      const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
-      const response = await dataGenre.json();
-      return response.data.name;
-    }
-  );
-  const genreNames = await Promise.all(genreNamesPromises);
-  return genreNames.join(", ");
+  try{
+    const genreNamesPromises = movie.genre.map(
+      async (genreObj: GenreOnMovies) => {
+        const genreID = genreObj.genreID;
+        const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
+        const response = await dataGenre.json();
+        return response.data.name;
+      }
+    );
+    const genreNames = await Promise.all(genreNamesPromises);
+    return genreNames.join(", ");
+  }catch(error){
+    console.error("Error getting genres names", error)
+  }
+  
 };
 
 export const getMovies = async () => {
-  const dataMovies = await fetch(`${localhostUrl}/movie`, {
-    next: { tags: ["movies"] },
-  });
-  const response = await dataMovies.json();
-  const movies = response.data;
-  const movieCards = await Promise.all(
-    movies.map((movie: Movie) => genreFetch(movie))
-  );
-  return movieCards;
+  try{
+    const dataMovies = await fetch(`${localhostUrl}/movie`, {
+      next: { tags: ["movies"] },
+    });
+    const response = await dataMovies.json();
+    const movies = response.data;
+    const movieCards = await Promise.all(
+      movies.map((movie: Movie) => genreFetch(movie))
+    );
+    return movieCards;
+  }catch(error){
+    console.error("Error getting movies", error)
+  }
+  
 };

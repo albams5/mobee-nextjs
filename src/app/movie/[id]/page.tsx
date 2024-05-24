@@ -25,8 +25,10 @@ export async function generateMetadata({params}:Props):Promise<Metadata> {
 
 export default async function MoviePage({ params }: Props) {
   const movie = await getMovie(params.id);
-  console.log(movie);
-  const genres = await genresFetch(movie);
+  let genres = await genresFetch(movie);
+  if (!genres) {
+    genres = "Géneros no disponibles";
+  }
   return (
     <MovieDetail genres={genres} movie={movie} />
   );

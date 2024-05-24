@@ -12,7 +12,7 @@ import { Metadata } from "next";
 
 const localhostUrl = process.env.NEXT_PUBLIC_LOCALHOST_URL;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Mobee App Home",
   description: "App to rate your fav movies"
 }
@@ -53,7 +53,7 @@ export default async function Home() {
   if (session && session.user) {
     user = session.user;
   } else {
-    console.log("Error, user not found");
+    console.error("Error, user not found");
   }
 
   const movieCards = await getMovies();
