@@ -7,21 +7,20 @@ interface Props {
   params: { id: string };
 }
 
-export async function generateMetadata({params}:Props):Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const {id, name} = await getMovie(params.id)
+    const { id, name } = await getMovie(params.id);
     return {
       title: `${name}`,
-      description: `${name} Page`
-    }
+      description: `${name} Page`,
+    };
   } catch (error) {
     return {
       title: "Movie Page",
-      description: "lore ipsum"
-    }
+      description: "lore ipsum",
+    };
   }
 }
-
 
 export default async function MoviePage({ params }: Props) {
   const movie = await getMovie(params.id);
@@ -30,6 +29,8 @@ export default async function MoviePage({ params }: Props) {
     genres = "Géneros no disponibles";
   }
   return (
-    <MovieDetail genres={genres} movie={movie} />
+    <>
+      <MovieDetail genres={genres} movie={movie} />
+    </>
   );
 }

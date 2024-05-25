@@ -4,16 +4,23 @@ import React, { useState, useEffect } from "react";
 import "./movieForm.css";
 import { getGenres } from "@/services/request.service";
 import { Genre } from "../movieCard/MovieCard";
+import toast from "react-hot-toast";
 
 interface MovieFormProps {
   handleFormSubmit?: (formData: FormData) => Promise<void>;
   movieId?: string;
   handlePatch?: (movieId: string, formData: FormData) => Promise<void>;
   setIsModalOpen?: (isOpen: boolean) => void;
-  isModalOpen?: boolean
+  isModalOpen?: boolean;
 }
 
-export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOpen, isModalOpen }: MovieFormProps) => {
+export const MovieForm = ({
+  handleFormSubmit,
+  movieId,
+  handlePatch,
+  setIsModalOpen,
+  isModalOpen,
+}: MovieFormProps) => {
   const [movieData, setMovieData] = useState<{
     name: string;
     image: File | null;
@@ -30,7 +37,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
 
   const [genres, setGenres] = useState<Genre[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -64,7 +71,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
       return;
     }
     setIsSubmitting(true);
-    setError("")
+    setError("");
     const formData = new FormData();
     formData.append("name", movieData.name);
     formData.append("score", movieData.score);
@@ -76,17 +83,19 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
       formData.append("image", movieData.image);
     }
 
-    if(movieId && handlePatch){
-      await handlePatch(movieId, formData)
+    if (movieId && handlePatch) {
+      await handlePatch(movieId, formData);
       if (setIsModalOpen) {
         setIsModalOpen(!isModalOpen);
       }
+      toast.success("Movie successfully edited!");
     }
 
-    if(handleFormSubmit) {
+    if (handleFormSubmit) {
       await handleFormSubmit(formData);
+      toast.success("Movie successfully added!");
     }
-    
+
     setMovieData({
       name: "",
       image: null,
@@ -94,7 +103,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
       genre: [],
       sinopsis: "",
     });
-    setIsSubmitting(false)
+    setIsSubmitting(false);
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +132,6 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
   };
 
   return (
-    
       <form onSubmit={handleSubmit} className="movie-form">
         <label htmlFor="name">Title:</label>
         <input
@@ -193,7 +201,7 @@ export const MovieForm = ({ handleFormSubmit, movieId, handlePatch, setIsModalOp
           ))}
         </div>
         <span className="error-container">
-        {error && <div style={{ color: "red" }}>{error}</div>}
+          {error && <div style={{ color: "red" }}>{error}</div>}
         </span>
         <input
           className="movies-form-btn"
