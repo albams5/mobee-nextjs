@@ -113,7 +113,7 @@ export const getMovies = async () => {
     const response = await dataMovies.json();
     const movies = response.data;
     const movieCards = await Promise.all(
-      movies.length > 0 && movies?.map((movie: Movie) => genreFetch(movie))
+      movies.map((movie: Movie) => genreFetch(movie))
     );
     return movieCards;
   }catch(error){
