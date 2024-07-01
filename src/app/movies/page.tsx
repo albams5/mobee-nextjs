@@ -35,7 +35,7 @@ export const genreFetch = async (movie: Movie) => {
   const genreNamesPromises = movie.genre.map(
     async (genreObj: GenreOnMovies) => {
       const genreID = genreObj.genreID;
-      const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
+      const dataGenre = await fetch(`${localhostUrl}genre/${genreID}`);
       const response = await dataGenre.json();
       return response.data.name;
     }

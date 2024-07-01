@@ -9,25 +9,25 @@ const localhostUrl = process.env.NEXT_PUBLIC_LOCALHOST_URL;
 export const removeMovie = async (id: string) => {
   const {accessToken} = await getAccessToken()
   try {
-    const res = await fetch(`${localhostUrl}/movie/${id}`, {
+    const res = await fetch(`${localhostUrl}movie/${id}`, {
       method: "DELETE",
       headers: {
           Authorization: `Bearer ${accessToken}`
       }
     });
     if (res.ok) {
-      revalidatePath(`/movies`, "page")
+      revalidatePath(`movies`, "page")
     }
   } catch (error) {
     console.error("Error deleting movie:", error);
   }
-  redirect("/movies")
+  redirect("movies")
 };
 
 export const postNewMovie = async (userID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
   try{
-    const res = await fetch(`${localhostUrl}/movie/${userID}`, {
+    const res = await fetch(`${localhostUrl}movie/${userID}`, {
       method: "POST",
       headers: {
             Authorization: `Bearer ${accessToken}`
@@ -35,7 +35,7 @@ export const postNewMovie = async (userID: string, movieData: FormData) => {
       body: movieData,
     });
     if (res.ok) {
-      revalidatePath("/movies");
+      revalidatePath("movies");
     }
   } catch(error){
     console.error("Error creating movie:", error);
@@ -45,7 +45,7 @@ export const postNewMovie = async (userID: string, movieData: FormData) => {
 export const patchMovie = async (movieID: string, movieData: FormData) => {
   const {accessToken} = await getAccessToken()
   try{
-    const res = await fetch(`${localhostUrl}/movie/${movieID}`, {
+    const res = await fetch(`${localhostUrl}movie/${movieID}`, {
       method: "PATCH",
       headers: {
             Authorization: `Bearer ${accessToken}`
@@ -53,7 +53,7 @@ export const patchMovie = async (movieID: string, movieData: FormData) => {
       body: movieData,
     });
     if (res.ok) {
-      revalidatePath(`/movie/${movieID}`);
+      revalidatePath(`movie/${movieID}`);
     }
   }catch(error){
     console.error("Error patching movie:", error);
@@ -63,7 +63,7 @@ export const patchMovie = async (movieID: string, movieData: FormData) => {
 
 export const getGenres = async () => {
   try{
-    const dataGenre = await fetch(`${localhostUrl}/genre`);
+    const dataGenre = await fetch(`${localhostUrl}genre`);
     const response = await dataGenre.json();
     return response.data;
   }catch{
@@ -73,7 +73,7 @@ export const getGenres = async () => {
 
 export const getMovie = async (id: string): Promise<Movie> => {
   try {
-    const dataMovie = await fetch(`${localhostUrl}/movie/${id}`, {
+    const dataMovie = await fetch(`${localhostUrl}movie/${id}`, {
       next: {
         revalidate: 60,
       },
@@ -92,7 +92,7 @@ export const genresFetch = async (movie: Movie) => {
     const genreNamesPromises = movie.genre.map(
       async (genreObj: GenreOnMovies) => {
         const genreID = genreObj.genreID;
-        const dataGenre = await fetch(`${localhostUrl}/genre/${genreID}`);
+        const dataGenre = await fetch(`${localhostUrl}genre/${genreID}`);
         const response = await dataGenre.json();
         return response.data.name;
       }
@@ -107,7 +107,7 @@ export const genresFetch = async (movie: Movie) => {
 
 export const getMovies = async () => {
   try{
-    const dataMovies = await fetch(`${localhostUrl}/movie`, {
+    const dataMovies = await fetch(`${localhostUrl}movie`, {
       next: { tags: ["movies"] },
     });
     const response = await dataMovies.json();
