@@ -1,6 +1,5 @@
-/* body {
-  background-color: #FFC93A;
-} */
+@import "./dummy.css";
+
 .loginlogoutbtn {
   background-color: black;
   color: #ffffff;
