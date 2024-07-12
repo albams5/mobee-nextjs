@@ -10,7 +10,7 @@ You'll be able to upload your movies, edit them or delete them if you want to.
 ## 🤳Features
 
 - 👌Rate your favorite movies and easily access them later. Did you change your mind about one of them? You can edit or delete them.
-- 📱Intuitive and user-friendly interface designed for mobile devices.
+- 📱Intuitive, responsive and user-friendly interface designed for mobile devices, tablet(>800px) and laptop (>1200px).
 - ⚙️Developed using modern technologies such as NextJs, TypeScript and Auth0.
 - 📫Incorporates React Hot Toast for instant and appealing notifications.
 - 📍Multiple Pages:
@@ -68,7 +68,7 @@ cd mobee-nextjs
 
 3. Install dependencies:
 
-npm Install
+npm install
 
 To start the development server, run:
 
