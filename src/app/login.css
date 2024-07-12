@@ -20,6 +20,16 @@ body {
     text-decoration: none;
 }
 
+@media(width >= 800px){
+    .section-login{
+        width: 800px
+    }
+}
 
+@media(width >= 1200px){
+    .section-login{
+        width: 1450px
+    }
+}
 
 

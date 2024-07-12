@@ -90,3 +90,21 @@
 .error-container{
   height: 1.5rem
 }
+
+@media(width>=800px){
+  .movie-form{
+    width: 35rem
+  }
+  .genre-checkboxes{
+    height: 4.5rem
+  }
+}
+
+@media(width>=1200px){
+  .movie-form{
+    width: 50rem
+  }
+  .genre-checkboxes{
+    height: 5rem
+  }
+}

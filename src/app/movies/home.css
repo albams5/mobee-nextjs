@@ -51,6 +51,7 @@ body{
 
 .movies-rated{
     display: flex;
+    align-items: center;
     width: 20rem;
     height: 25rem;
     background-color: #F1EBDB;
@@ -73,4 +74,16 @@ body{
     display: flex;
     justify-content: center;
     text-decoration: none;
+}
+
+@media(width >= 800px){
+    .movies-rated{
+        width: 35rem
+    }
+}
+
+@media(width >= 1200px){
+    .movies-rated{
+        width: 50rem
+    }
 }
