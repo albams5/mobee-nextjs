@@ -52,6 +52,10 @@ To connect, please use the next-backend branch.
 
 https://github.com/albams5/movie-hub
 
+## 🚀Deployment
+
+This project is already deployed in Netlify: https://delicate-rabanadas-292188.netlify.app/
+
 
 ## 🧑‍💻Installation
 
